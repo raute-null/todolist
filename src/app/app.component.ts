@@ -19,6 +19,7 @@ const TODO_ITEMS: TodoItem[] = [
 @Component({
   selector: 'todolist-app',
   template:`
+    <h1>{{title}}</h1>
     <ul id="todoList">
       <li class="todoListItem" *ngFor="let todoItem of todoItems"
         [class.done]="todoItem.done === true">
@@ -34,12 +35,16 @@ export class AppComponent  {
   title = 'TodoList';
   todoItems = TODO_ITEMS;
 
-  onSetDone(todoItem: TodoItem): void {
-    todoItem.done = !todoItem.done;
-  }
-
-  onDelete(todoItem: TodoItem): void {
-    // TODO
+  /**
+   * Deletes the given todo item from the list.
+   *
+   * @param selectedTodoItem the selected todo item to be deleted
+   */
+  onDelete(selectedTodoItem: TodoItem): void {
+    var index = this.todoItems.indexOf(selectedTodoItem, 0);
+    if (index > -1) {
+      this.todoItems.splice(index, 1);
+    }
   }
 
 }

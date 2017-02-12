@@ -26,16 +26,21 @@ var AppComponent = (function () {
         this.title = 'TodoList';
         this.todoItems = TODO_ITEMS;
     }
-    AppComponent.prototype.onSetDone = function (todoItem) {
-        todoItem.done = !todoItem.done;
-    };
-    AppComponent.prototype.onDelete = function (todoItem) {
-        // TODO
+    /**
+     * Deletes the given todo item from the list.
+     *
+     * @param selectedTodoItem the selected todo item to be deleted
+     */
+    AppComponent.prototype.onDelete = function (selectedTodoItem) {
+        var index = this.todoItems.indexOf(selectedTodoItem, 0);
+        if (index > -1) {
+            this.todoItems.splice(index, 1);
+        }
     };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'todolist-app',
-            template: "\n    <ul id=\"todoList\">\n      <li class=\"todoListItem\" *ngFor=\"let todoItem of todoItems\"\n        [class.done]=\"todoItem.done === true\">\n        <input type=\"checkbox\" class=\"todoItemDoneTrigger\" [(ngModel)]=\"todoItem.done\" />\n        <span class=\"todoItemText\">{{todoItem.name}}</span>\n        <img src=\"./img/delete.png\" height=\"20\" class=\"todoItemDelete\" (click)=\"onDelete(todoItem)\" />\n      </li>\n    </ul>\n  "
+            template: "\n    <h1>{{title}}</h1>\n    <ul id=\"todoList\">\n      <li class=\"todoListItem\" *ngFor=\"let todoItem of todoItems\"\n        [class.done]=\"todoItem.done === true\">\n        <input type=\"checkbox\" class=\"todoItemDoneTrigger\" [(ngModel)]=\"todoItem.done\" />\n        <span class=\"todoItemText\">{{todoItem.name}}</span>\n        <img src=\"./img/delete.png\" height=\"20\" class=\"todoItemDelete\" (click)=\"onDelete(todoItem)\" />\n      </li>\n    </ul>\n  "
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);
