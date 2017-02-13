@@ -12,7 +12,6 @@ body {
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
-
     font-family: 'Cardo', Georgia, Times, serif;
 }
 
@@ -37,17 +36,13 @@ body {
     line-height: 40px;
 }
 
-
 #content {
     display: flex;
     flex-direction: column;
 }
 
 #newItemInputWrapper {
-    width: 500px;
     background-color: #ffffff;
-    margin-left: auto;
-    margin-right: auto;
     margin-top: 25px;
     border-radius: 3px;
     height: 75px;
@@ -79,10 +74,14 @@ body {
 
 #todoList {
     list-style-type: none;
+    padding-left: 0;
+}
+
+#newItemInputWrapper,
+#todoList {
     width: 500px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 0;
 }
 
 #todoList .todoListItem {
@@ -92,12 +91,10 @@ body {
     color: 00ee01;
     border-radius: 3px;
     margin-bottom: 10px;
-
 }
 
 #todoList .todoListItem.done {
     opacity: 0.6;
-
     -webkit-transition: opacity 0.6s ease-in-out;
     -moz-transition: opacity 0.6s ease-in-out;
     transition: opacity 0.6s ease-in-out;
@@ -119,7 +116,7 @@ body {
     display: block;
     float: left;
     line-height: 60px;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 #todoList .todoListItem .todoItemDelete {
@@ -132,18 +129,22 @@ body {
 
 #todoList .todoListItem:hover .todoItemDelete {
     display: block;
-
 }
 
+/* small screens */
+@media all and (max-width: 800px) {
+  #newItemInputWrapper,
+  #todoList {
+      width: 300px;
+  }
 
-todoItemDelete
 
+  #newItemInput {
+    width: 185px;
+    font-size: 18px;
+  }
 
-
-
-
-h1 {
-  color: #369;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 250%;
+  #todoList .todoListItem .todoItemText {
+    font-size: 16px;
+  }
 }

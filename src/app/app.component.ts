@@ -11,8 +11,10 @@ import { TodoItem } from './todo-item';
     </div>
     <div id="content">
         <div id="newItemInputWrapper">
-            <input id="newItemInput" #newItemText placeholder="Enter new todo item..." />
-            <button (click)="addItem(newItemText.value)" title="Click to add the entered todo item">Add</button>
+            <input #newItemText id="newItemInput" placeholder="Enter new todo item..."
+                (keyup.enter)="addItem(newItemText.value); newItemText.value = '';" />
+            <button (click)="addItem(newItemText.value); newItemText.value = ''; newItemText.focus()"
+                title="Click to add the entered todo item">Add</button>
         </div>
         <div id="todoListWrapper">
             <ul id="todoList">
