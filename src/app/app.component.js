@@ -9,22 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var TODO_ITEMS = [
-    { id: 1, name: 'Buy milk', done: false },
-    { id: 2, name: 'Mow the lawn', done: false },
-    { id: 3, name: 'Check mails', done: false },
-    { id: 4, name: 'Grocery shopping', done: true },
-    { id: 5, name: 'Write a letter', done: false },
-    { id: 6, name: 'Go fishing', done: false },
-    { id: 7, name: 'Paint the house', done: false },
-    { id: 8, name: 'Clean the kitchen', done: true },
-    { id: 9, name: 'Walk the dog', done: false },
-    { id: 10, name: 'Eat something healthy', done: false }
-];
+var todo_item_1 = require('./todo-item');
 var AppComponent = (function () {
     function AppComponent() {
         this.title = 'TodoList';
-        this.todoItems = TODO_ITEMS;
+        this.todoItems = [];
     }
     /**
      * Deletes the given todo item from the list.
@@ -37,10 +26,37 @@ var AppComponent = (function () {
             this.todoItems.splice(index, 1);
         }
     };
+    /**
+     * Adds the item with the given text to the list of todo items.
+     *
+     * @param text the name for the todo item to be added
+     */
+    AppComponent.prototype.addItem = function (text) {
+        if (text) {
+            var newItem = new todo_item_1.TodoItem();
+            newItem.name = text;
+            newItem.done = false;
+            newItem.id = this.findNextFreeId();
+            this.todoItems.push(newItem);
+        }
+    };
+    /**
+     * Returns the next free ID value.
+     *
+     * @return the next unused ID value
+     */
+    AppComponent.prototype.findNextFreeId = function () {
+        if (this.todoItems.length === 0) {
+            return 0;
+        }
+        var latestItem = this.todoItems.slice(-1)[0];
+        var latestItemId = latestItem.id;
+        return ++latestItemId;
+    };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'todolist-app',
-            template: "\n    <h1>{{title}}</h1>\n    <ul id=\"todoList\">\n      <li class=\"todoListItem\" *ngFor=\"let todoItem of todoItems\"\n        [class.done]=\"todoItem.done === true\">\n        <input type=\"checkbox\" class=\"todoItemDoneTrigger\" [(ngModel)]=\"todoItem.done\" />\n        <span class=\"todoItemText\">{{todoItem.name}}</span>\n        <img src=\"./img/delete.png\" height=\"20\" class=\"todoItemDelete\" (click)=\"onDelete(todoItem)\" />\n      </li>\n    </ul>\n  "
+            template: "\n    <div id=\"titleBar\">\n        <img src=\"./img/icon.png\" height=\"24\" />\n        <span id=\"appTitle\">TodoList</span>\n    </div>\n    <div id=\"content\">\n        <div id=\"newItemInputWrapper\">\n            <input id=\"newItemInput\" #newItemText placeholder=\"Enter new todo item...\" />\n            <button (click)=\"addItem(newItemText.value)\" title=\"Click to add the entered todo item\">Add</button>\n        </div>\n        <div id=\"todoListWrapper\">\n            <ul id=\"todoList\">\n              <li class=\"todoListItem\" *ngFor=\"let todoItem of todoItems.slice().reverse()\"\n                [class.done]=\"todoItem.done === true\"\n                [id]=\"todoItem.id\">\n                <input type=\"checkbox\" class=\"todoItemDoneTrigger\" [(ngModel)]=\"todoItem.done\"\n                 [attr.title]=\"todoItem.done ? 'Mark item as undone' : 'Mark item as done'\"\n                />\n                <span class=\"todoItemText\">{{todoItem.name}}</span>\n                <img src=\"./img/delete.png\" height=\"20\" class=\"todoItemDelete\" (click)=\"onDelete(todoItem)\"\n                 title=\"Delete this todo item\" />\n              </li>\n            </ul>\n        </div>\n    </div>\n  "
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

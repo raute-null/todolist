@@ -2,38 +2,39 @@ import { Component } from '@angular/core';
 
 import { TodoItem } from './todo-item';
 
-const TODO_ITEMS: TodoItem[] = [
-  { id: 1, name: 'Buy milk', done: false },
-  { id: 2, name: 'Mow the lawn', done: false },
-  { id: 3, name: 'Check mails', done: false },
-  { id: 4, name: 'Grocery shopping', done: true },
-  { id: 5, name: 'Write a letter', done: false },
-  { id: 6, name: 'Go fishing', done: false },
-  { id: 7, name: 'Paint the house', done: false },
-  { id: 8, name: 'Clean the kitchen', done: true },
-  { id: 9, name: 'Walk the dog', done: false },
-  { id: 10, name: 'Eat something healthy', done: false }
-];
-
-
 @Component({
   selector: 'todolist-app',
   template:`
-    <h1>{{title}}</h1>
-    <ul id="todoList">
-      <li class="todoListItem" *ngFor="let todoItem of todoItems"
-        [class.done]="todoItem.done === true">
-        <input type="checkbox" class="todoItemDoneTrigger" [(ngModel)]="todoItem.done" />
-        <span class="todoItemText">{{todoItem.name}}</span>
-        <img src="./img/delete.png" height="20" class="todoItemDelete" (click)="onDelete(todoItem)" />
-      </li>
-    </ul>
+    <div id="titleBar">
+        <img src="./img/icon.png" height="24" />
+        <span id="appTitle">TodoList</span>
+    </div>
+    <div id="content">
+        <div id="newItemInputWrapper">
+            <input id="newItemInput" #newItemText placeholder="Enter new todo item..." />
+            <button (click)="addItem(newItemText.value)" title="Click to add the entered todo item">Add</button>
+        </div>
+        <div id="todoListWrapper">
+            <ul id="todoList">
+              <li class="todoListItem" *ngFor="let todoItem of todoItems.slice().reverse()"
+                [class.done]="todoItem.done === true"
+                [id]="todoItem.id">
+                <input type="checkbox" class="todoItemDoneTrigger" [(ngModel)]="todoItem.done"
+                 [attr.title]="todoItem.done ? 'Mark item as undone' : 'Mark item as done'"
+                />
+                <span class="todoItemText">{{todoItem.name}}</span>
+                <img src="./img/delete.png" height="20" class="todoItemDelete" (click)="onDelete(todoItem)"
+                 title="Delete this todo item" />
+              </li>
+            </ul>
+        </div>
+    </div>
   `
 })
 
 export class AppComponent  {
   title = 'TodoList';
-  todoItems = TODO_ITEMS;
+  todoItems: TodoItem[] = [];
 
   /**
    * Deletes the given todo item from the list.
@@ -45,6 +46,35 @@ export class AppComponent  {
     if (index > -1) {
       this.todoItems.splice(index, 1);
     }
+  }
+
+  /**
+   * Adds the item with the given text to the list of todo items.
+   *
+   * @param text the name for the todo item to be added
+   */
+  addItem(text: string) {
+    if (text) {
+        let newItem = new TodoItem();
+        newItem.name = text;
+        newItem.done = false;
+        newItem.id = this.findNextFreeId();
+        this.todoItems.push(newItem);
+    }
+  }
+
+  /**
+   * Returns the next free ID value.
+   *
+   * @return the next unused ID value
+   */
+  findNextFreeId(): number {
+    if (this.todoItems.length === 0) {
+        return 0;
+    }
+    let latestItem = this.todoItems.slice(-1)[0];
+    let latestItemId = latestItem.id;
+    return ++latestItemId;
   }
 
 }
